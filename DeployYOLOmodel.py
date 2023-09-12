@@ -6,10 +6,18 @@ from time import time
 import yolov5
 import cv2
 import torch
+import LocationVideo
+
+#Nome do arquivo Json gerado pelo site
+#https://goprotelemetryextractor.com/free/
+nameJsonVideo = 'C:\Tcc\Pot-Hole-Detection-Yolo\GL011244_1_GPS5.json'
+
+locationVideo = LocationVideo.LocationVideo(nameJsonVideo)
+
+locationVideo.formatJson()
+# Para buscar a localização usar a função: locationVideo.getLocation('0:0:30')
 
 model = torch.hub.load('ultralytics/yolov5', 'custom', path= 'C:\\Users\\gvele\\Desktop\\TCC\Modelo de IA\\best.pt')
-
-
 
 cap = cv2.VideoCapture('C:\\Users\\gvele\\Desktop\TCC\\videos\\video1.mp4')
 
