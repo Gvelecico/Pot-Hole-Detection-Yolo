@@ -42,7 +42,7 @@ while True:
             if(len(results.pred[result].detach().cpu().numpy()) > 0):
                     if results.pred[result].detach().cpu().numpy()[0][4] > 0.5:  # Ajuste o limiar de confiança conforme necessário
                         start_times.append(current_time)
-                        print("SUA ACURÁCIA É: " + results.pred[result].detach().cpu().numpy()[0][4])
+                        print("SUA ACURÁCIA É: " + str(results.pred[result].detach().cpu().numpy()[0][4]))
                         # Busca a latitude e longitude apartir do segundos do vídeo
                         print(locationVideo.getLocationBySecond(math.ceil(cap.get(cv2.CAP_PROP_POS_MSEC) / 1000.0)))
 
