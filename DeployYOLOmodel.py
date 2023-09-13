@@ -9,7 +9,7 @@ import math
 
 #Nome do arquivo Json gerado pelo site
 #https://goprotelemetryextractor.com/free/
-nameVideo = 'video2'
+nameVideo = 'video3'
 nameModelo = 'best'
 
 locationVideo = LocationVideo.LocationVideo(nameVideo)
@@ -33,18 +33,18 @@ while True:
 
     # Realizar a detecção de objetos no frame
     results = model(frame)
-    
-    # Busca a latitude e longitude apartir do segundos do vídeo
-    locationVideo.getLocationBySecond(math.ceil(cap.get(cv2.CAP_PROP_POS_MSEC) / 1000.0))
 
-    # Verificar se o rótulo de interesse está presente nos resultados
-    if target_label in results.names:
-        current_time = cap.get(cv2.CAP_PROP_POS_MSEC) / 60000.0  # Converter para minutos
-        print(current_time)
-        labels = results.names[target_label]
-        for label, confidence, bbox in zip(*results.pred[target_label][0].detach().cpu().numpy()):
-            if confidence > 0.5:  # Ajuste o limiar de confiança conforme necessário
-                start_times.append(current_time)
+    for result in results.names:
+        # Verificar se o rótulo de interesse está presente nos resultados
+        if target_label == results.names[result]:
+            current_time = cap.get(cv2.CAP_PROP_POS_MSEC) / 60000.0 
+            labels = results.names[result]
+            if(len(results.pred[result].detach().cpu().numpy()) > 0):
+                    if results.pred[result].detach().cpu().numpy()[0][4] > 0.5:  # Ajuste o limiar de confiança conforme necessário
+                        start_times.append(current_time)
+                        print("SUA ACURÁCIA É: " + results.pred[result].detach().cpu().numpy()[0][4])
+                        # Busca a latitude e longitude apartir do segundos do vídeo
+                        print(locationVideo.getLocationBySecond(math.ceil(cap.get(cv2.CAP_PROP_POS_MSEC) / 1000.0)))
 
     # Processar e exibir os resultados no frame
     output_frame = results.render()[0]
