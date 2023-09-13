@@ -1,5 +1,6 @@
 from datetime import datetime
 import json
+import os
 
 class LocationVideo:
     
@@ -8,7 +9,7 @@ class LocationVideo:
         self.dictionaryLocation = {}
 
     def formatJson(self):
-        f = open(self.nameJsonVideo)
+        f =  open(os.path.dirname(os.path.realpath(__file__)) + '\\json\\' + self.nameJsonVideo + '.json')
 
         data = json.load(f)
         
@@ -21,12 +22,15 @@ class LocationVideo:
 
     # Função que detecta o tempo
     def getLocation(self, time):
-        return self.dictionaryLocation[get_sec(time)]
+        second = get_sec(time)
+        if(second < len(self.dictionaryLocation)):
+            return self.dictionaryLocation[second]
     
+    def getLocationBySecond(self, second):
+        if(second < len(self.dictionaryLocation)):
+            return self.dictionaryLocation[second]
 
 def get_sec(time):
         """Get seconds from time."""
         h, m, s = time.split(':')
         return int(h) * 3600 + int(m) * 60 + int(s)
-
-
