@@ -8,18 +8,19 @@ import cv2
 import torch
 import LocationVideo
 
+
 #Nome do arquivo Json gerado pelo site
 #https://goprotelemetryextractor.com/free/
-nameJsonVideo = 'C:\Tcc\Pot-Hole-Detection-Yolo\GL011244_1_GPS5.json'
+#nameJsonVideo = 'C:\\Users\zgvele\\Desktop\\TCC\\videos\json\\GL011244_1_GPS5.json'
 
-locationVideo = LocationVideo.LocationVideo(nameJsonVideo)
+#locationVideo = LocationVideo.LocationVideo(nameJsonVideo)
 
-locationVideo.formatJson()
+#locationVideo.formatJson()
 # Para buscar a localização usar a função: locationVideo.getLocation('0:0:30')
 
 model = torch.hub.load('ultralytics/yolov5', 'custom', path= 'C:\\Users\\gvele\\Desktop\\TCC\Modelo de IA\\best.pt')
 
-cap = cv2.VideoCapture('C:\\Users\\gvele\\Desktop\TCC\\videos\\video1.mp4')
+cap = cv2.VideoCapture('C:\\Users\\gvele\\Desktop\TCC\\videos\\video02.mp4')
 
 target_label = 'pot-holes'
 
@@ -35,10 +36,11 @@ while True:
 
     # Verificar se o rótulo de interesse está presente nos resultados
     if target_label in results.names:
+        current_time = cap.get(cv2.CAP_PROP_POS_MSEC) / 60000.0  # Converter para minutos
+        print(current_time)
         labels = results.names[target_label]
         for label, confidence, bbox in zip(*results.pred[target_label][0].detach().cpu().numpy()):
             if confidence > 0.5:  # Ajuste o limiar de confiança conforme necessário
-                current_time = cap.get(cv2.CAP_PROP_POS_MSEC) / 60000.0  # Converter para minutos
                 start_times.append(current_time)
 
     # Processar e exibir os resultados no frame
