@@ -9,14 +9,12 @@ import math
 
 #Nome do arquivo Json gerado pelo site
 #https://goprotelemetryextractor.com/free/
-nameJsonVideo = 'GL011244_1_GPS5'
-nameVideo = 'video1'
+nameVideo = 'video2'
 nameModelo = 'best'
 
-#locationVideo = LocationVideo.LocationVideo(nameJsonVideo)
+locationVideo = LocationVideo.LocationVideo(nameVideo)
 
-#locationVideo.formatJson()
-# Para buscar a localização usar a função: locationVideo.getLocation('0:0:30')
+locationVideo.formatJson()
 
 model = torch.hub.load('ultralytics/yolov5', 'custom', path= os.path.dirname(os.path.realpath(__file__)) + '\\modelo\\' + nameModelo + '.pt')
 
