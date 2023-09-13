@@ -1,7 +1,6 @@
-from datetime import datetime
+import dateutil.parser
 import json
 import os
-
 class LocationVideo:
     
     def __init__(self, nameJsonVideo):
@@ -13,10 +12,10 @@ class LocationVideo:
 
         data = json.load(f)
         
-        first = datetime.fromisoformat(data['1']['streams']['GPS5']['samples'][0]['date'])
+        first = dateutil.parser.isoparse(data['1']['streams']['GPS5']['samples'][0]['date'])
 
         for i in data['1']['streams']['GPS5']['samples']:
-            self.dictionaryLocation[(datetime.fromisoformat(i['date']) - first).seconds] = {"latitude":i['value'][0], "longitude":i['value'][1]}
+            self.dictionaryLocation[(dateutil.parser.isoparse(i['date']) - first).seconds] = {"latitude":i['value'][0], "longitude":i['value'][1]}
         
         f.close()
 
