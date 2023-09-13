@@ -6,15 +6,16 @@ import LocationVideo
 import os
 import math
 
+
 #Nome do arquivo Json gerado pelo site
 #https://goprotelemetryextractor.com/free/
 nameJsonVideo = 'GL011244_1_GPS5'
 nameVideo = 'video1'
 nameModelo = 'best'
 
-locationVideo = LocationVideo.LocationVideo(nameJsonVideo)
+#locationVideo = LocationVideo.LocationVideo(nameJsonVideo)
 
-locationVideo.formatJson()
+#locationVideo.formatJson()
 # Para buscar a localização usar a função: locationVideo.getLocation('0:0:30')
 
 model = torch.hub.load('ultralytics/yolov5', 'custom', path= os.path.dirname(os.path.realpath(__file__)) + '\\modelo\\' + nameModelo + '.pt')
@@ -40,10 +41,11 @@ while True:
 
     # Verificar se o rótulo de interesse está presente nos resultados
     if target_label in results.names:
+        current_time = cap.get(cv2.CAP_PROP_POS_MSEC) / 60000.0  # Converter para minutos
+        print(current_time)
         labels = results.names[target_label]
         for label, confidence, bbox in zip(*results.pred[target_label][0].detach().cpu().numpy()):
             if confidence > 0.5:  # Ajuste o limiar de confiança conforme necessário
-                current_time = cap.get(cv2.CAP_PROP_POS_MSEC) / 60000.0  # Converter para minutos
                 start_times.append(current_time)
 
     # Processar e exibir os resultados no frame
