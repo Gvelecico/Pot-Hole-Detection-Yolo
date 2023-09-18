@@ -9,7 +9,7 @@ import math
 
 #Nome do arquivo Json gerado pelo site
 #https://goprotelemetryextractor.com/free/
-nameVideo = 'video3'
+nameVideo = 'GL011255'
 nameModelo = 'best'
 
 locationVideo = LocationVideo.LocationVideo(nameVideo)
