@@ -6,6 +6,7 @@ import LocationVideo
 import os
 import math
 
+dictionary_location = {}
 
 #Nome do arquivo Json gerado pelo site
 #https://goprotelemetryextractor.com/free/
@@ -22,8 +23,6 @@ cap = cv2.VideoCapture(os.path.dirname(os.path.realpath(__file__)) + '\\videos\\
 
 target_label = 'pot-holes'
 
-start_times = []  # Inicializar uma lista para armazenar os tempos
-
 while True:
     
     ret, frame = cap.read()
@@ -37,14 +36,17 @@ while True:
     for result in results.names:
         # Verificar se o rótulo de interesse está presente nos resultados
         if target_label == results.names[result]:
-            current_time = cap.get(cv2.CAP_PROP_POS_MSEC) / 60000.0 
             labels = results.names[result]
             if(len(results.pred[result].detach().cpu().numpy()) > 0):
-                    if results.pred[result].detach().cpu().numpy()[0][4] > 0.5:  # Ajuste o limiar de confiança conforme necessário
-                        start_times.append(current_time)
-                        print("SUA ACURÁCIA É: " + str(results.pred[result].detach().cpu().numpy()[0][4]))
-                        # Busca a latitude e longitude apartir do segundos do vídeo
-                        print(locationVideo.getLocationBySecond(math.ceil(cap.get(cv2.CAP_PROP_POS_MSEC) / 1000.0)))
+                
+                    # Identifica caso a acurácia seja > 70% 
+                    if results.pred[result].detach().cpu().numpy()[0][4] > 0.7:
+                        
+                        # Busca os segundos do vídeo 
+                        second = math.ceil(cap.get(cv2.CAP_PROP_POS_MSEC) / 1000.0)
+                        
+                        # Adiciona no dicionário a latitude e longitude
+                        dictionary_location[second] = locationVideo.getLocationBySecond(second)
 
     # Processar e exibir os resultados no frame
     output_frame = results.render()[0]
@@ -58,11 +60,4 @@ while True:
 cap.release()
 cv2.destroyAllWindows()
 
-
-
-if start_times:
-    print(f"O rótulo '{target_label}' foi detectado nos seguintes minutos:")
-    for time in start_times:
-        print(f"{time:.2f} minutos")
-else:
-    print(f"O rótulo '{target_label}' não foi detectado no vídeo.")
+print(dictionary_location)
