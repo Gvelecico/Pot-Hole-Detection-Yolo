@@ -14,7 +14,7 @@ dictionary_location = {}
 nameVideo = 'GL011255'
 nameModelo = 'best'
 
-locationsSQL = LocationsSQL()
+locationsSQL = LocationsSQL.LocationsSQL()
 locationVideo = LocationVideo.LocationVideo(nameVideo)
 
 locationVideo.formatJson()
@@ -48,8 +48,8 @@ while True:
                         second = math.ceil(cap.get(cv2.CAP_PROP_POS_MSEC) / 1000.0)
                         
                         # Adiciona no dicionário a latitude e longitude
-                        dictionary_location[second] = locationVideo.getLocationBySecond(second)
-
+                        latLong =  locationVideo.getLocationBySecond(second)
+                        locationsSQL.insertLatLong(latLong['latitude'], latLong['longitude'])
     # Processar e exibir os resultados no frame
     output_frame = results.render()[0]
 
@@ -59,6 +59,7 @@ while True:
     if cv2.waitKey(1) & 0xFF == ord('q'):
         break
 
+locationsSQL.close()
 cap.release()
 cv2.destroyAllWindows()
 
