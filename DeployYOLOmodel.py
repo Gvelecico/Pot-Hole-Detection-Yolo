@@ -5,6 +5,7 @@ import cv2
 import LocationVideo
 import os
 import math
+import LocationsSQL
 
 dictionary_location = {}
 
@@ -13,6 +14,7 @@ dictionary_location = {}
 nameVideo = 'GL011255'
 nameModelo = 'best'
 
+locationsSQL = LocationsSQL()
 locationVideo = LocationVideo.LocationVideo(nameVideo)
 
 locationVideo.formatJson()
