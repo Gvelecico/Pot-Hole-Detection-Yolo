@@ -49,7 +49,9 @@ while True:
                         
                         # Adiciona no dicionário a latitude e longitude
                         latLong =  locationVideo.getLocationBySecond(second)
-                        locationsSQL.insertLatLong(latLong['latitude'], latLong['longitude'])
+                        
+                        if(len(locationsSQL.searchByRaio(latLong['latitude'], latLong['longitude'])) <= 0):
+                            locationsSQL.insertLatLong(latLong['latitude'], latLong['longitude'])
     # Processar e exibir os resultados no frame
     output_frame = results.render()[0]
 
